@@ -10,6 +10,7 @@ export interface Game {
   obsDim: string;
   actDim: string;
   tiers: string[];
+  image: { light: string; dark: string };
 }
 
 /** Add a game here and every grid on the site absorbs it. */
@@ -31,6 +32,7 @@ export const games: Game[] = [
     obsDim: "{{PUSHBLOCK_OBS_DIM}}",
     actDim: "{{PUSHBLOCK_ACT_DIM}}",
     tiers: ["10-agent pool", "100-agent pool"],
+    image: { light: "/games/pushblock-light.png", dark: "/games/pushblock-dark.png" },
   },
   {
     slug: "foodcollector",
@@ -49,5 +51,6 @@ export const games: Game[] = [
     obsDim: "{{FOODCOLLECTOR_OBS_DIM}}",
     actDim: "{{FOODCOLLECTOR_ACT_DIM}}",
     tiers: ["10-agent pool", "100-agent pool"],
+    image: { light: "/games/foodcollector-light.png", dark: "/games/foodcollector-dark.png" },
   },
 ];

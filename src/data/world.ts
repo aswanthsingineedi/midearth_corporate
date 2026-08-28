@@ -75,4 +75,4 @@ export const REGIONS: Region[] = [
 ];
 
 /** Where the arcs converge. Not a place — the arena is the logical centre. */
-export const HUB = { lat: 24, lon: 6 };
+export const HUB = { lat: 22.3, lon: 114.17 };

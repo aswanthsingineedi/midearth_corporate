@@ -5,7 +5,7 @@ import { LAND, REGIONS, HUB } from "../data/world";
  * Cold open — an eight-second title sequence in four beats:
  * data centres → AI agents → the match → settlement. The same four beats the
  * network section explains, drawn from the same world data so it reads as the
- * same world, then hands off to the page.
+ * same world, then hands off to the real app.
  *
  * What makes it filmic rather than a loading spinner:
  *   - a camera that pushes in on the arena for the match and pulls back for
@@ -14,14 +14,21 @@ import { LAND, REGIONS, HUB } from "../data/world";
  *   - a telemetry column in screen space that fills as each beat runs
  *   - eased beat transitions, so nothing arrives at a constant rate
  *
+ * Trigger: NOT page load. This component sits on every page (via Base.astro)
+ * hidden by CSS, and only plays when the visitor clicks a "Launch Agent"
+ * control — any element marked [data-launch-agent] with an href, anywhere
+ * on the site (nav, hero, mobile sheet, ...). It is the send-off before
+ * app.midearth.ai, not a splash screen. ?intro=1 forces a load-time preview
+ * for design review; that path never redirects on dismiss.
+ *
  * Safety rules, because a splash screen that gets stuck is worse than none:
- *   - display:none by default. A head script in Base.astro sets data-intro on
- *     <html> BEFORE first paint, which is the only thing that reveals it.
- *     No JS, no overlay — the page is simply there.
- *   - Home page only, so interior pages never make you sit through it.
- *   - Skipped entirely under prefers-reduced-motion.
- *   - Dismissable by click, Esc, space, or the skip button.
- *   - A hard failsafe removes it regardless of what else went wrong.
+ *   - display:none by default. Only html[data-intro] reveals it.
+ *   - Skipped entirely under prefers-reduced-motion — the click goes
+ *     straight to the destination URL instead.
+ *   - Dismissable by click, Esc, space, or the skip button — each of those
+ *     skips straight to the destination too, since the visitor already
+ *     chose to leave.
+ *   - A hard failsafe finishes it regardless of what else went wrong.
  */
 ---
 
@@ -39,7 +46,7 @@ import { LAND, REGIONS, HUB } from "../data/world";
     <div class="intro-foot">
       <div class="intro-stage">
         <span class="intro-count mono"><b data-intro-num>01</b> / 04</span>
-        <span class="intro-label display" data-intro-label>Data centres</span>
+        <span class="intro-label display" data-intro-label>CONNECT YOUR AGENTS ACROSS THE WORLD</span>
         <span class="intro-kicker mono" data-intro-kick>twelve regions, one arena</span>
       </div>
       <div class="intro-bar" aria-hidden="true"><i data-intro-bar></i></div>
@@ -228,9 +235,43 @@ import { LAND, REGIONS, HUB } from "../data/world";
 
 <script is:inline define:vars={{ LAND, REGIONS, HUB }}>
   (function () {
-    if (!document.documentElement.hasAttribute("data-intro")) return;
     var root = document.querySelector("[data-intro-root]");
     if (!root) return;
+
+    var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var started = false;
+    var launching = false;
+    var pendingHref = null;
+
+    // Any [data-launch-agent] control, anywhere on the page, sends the
+    // visitor off through this cold open instead of navigating directly.
+    // Reduced motion (and no-JS, which never reaches this listener at all)
+    // goes straight to the href — the real link is still there underneath.
+    document.addEventListener("click", function (e) {
+      var trigger = e.target.closest("[data-launch-agent]");
+      if (!trigger) return;
+      var href = trigger.getAttribute("href");
+      if (!href) return;
+      e.preventDefault();
+      if (reducedMotion) {
+        window.location.href = href;
+        return;
+      }
+      if (launching) return;
+      launching = true;
+      pendingHref = href;
+      document.documentElement.setAttribute("data-intro", "1");
+      startIntro();
+    });
+
+    // ?intro=1 forces a preview on load, for design review. pendingHref stays
+    // null on this path, so dismissing it just reveals the page underneath
+    // instead of redirecting anywhere.
+    if (document.documentElement.hasAttribute("data-intro")) startIntro();
+
+    function startIntro() {
+      if (started) return;
+      started = true;
 
     var canvas = root.querySelector("[data-intro-canvas]");
     var ctx = canvas.getContext("2d");
@@ -274,6 +315,10 @@ import { LAND, REGIONS, HUB } from "../data/world";
       done = true;
       root.classList.add("out");
       setTimeout(function () {
+        if (pendingHref) {
+          window.location.href = pendingHref;
+          return;
+        }
         document.documentElement.removeAttribute("data-intro");
         if (root.parentNode) root.parentNode.removeChild(root);
       }, 550);
@@ -365,7 +410,7 @@ import { LAND, REGIONS, HUB } from "../data/world";
     var B1 = [0.55, 2.35], B2 = [2.35, 4.15], B3 = [4.15, 6.35], B4 = [6.35, 7.8];
     var CLOSE = 7.8, TOTAL = 8.25;
     var BEATS = [
-      { n: "01", t: "Data centres", k: "twelve regions, one arena" },
+      { n: "01", t: "Connect your agents across the world", k: "twelve regions, one arena" },
       { n: "02", t: "AI agents", k: "each one holds its own keys" },
       { n: "03", t: "The match", k: "every agent on the same tick" },
       { n: "04", t: "Settlement", k: "rank payout, then on-chain" },
@@ -664,5 +709,6 @@ import { LAND, REGIONS, HUB } from "../data/world";
       }
     }
     requestAnimationFrame(frame);
+    } // end startIntro
   })();
 </script>

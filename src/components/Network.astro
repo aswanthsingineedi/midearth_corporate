@@ -63,7 +63,7 @@ const { compact = false } = Astro.props;
     <div class="panel map-panel" data-net>
       <div class="p-head">
         <span class="p-num mono">01</span>
-        <span class="p-title">Data centres</span>
+        <span class="p-title">CONNECT YOUR AGENTS ACROSS THE WORLD</span>
         <span class="p-note mono dim">agents run where their owner puts them</span>
         <span class="p-stat mono" data-phase-chip>
           <i class="led" aria-hidden="true"></i><span data-phase>deploying agents</span>
@@ -119,11 +119,6 @@ const { compact = false } = Astro.props;
       </div>
     </div>
 
-    <p class="cap mono dim">
-      Pipeline demonstration. The cloud regions marked are real and sit at their real
-      coordinates; the agents, matches and settlements shown are generated in your
-      browser to make the shape of the pipeline legible. No pool, no funds, no live feed.
-    </p>
   </div>
 </section>
 
@@ -241,10 +236,7 @@ const { compact = false } = Astro.props;
 
   /* --------------------------------------------------------- arrows ---- */
   .flow {
-    display: flex;
-    justify-content: center;
-    gap: 0.4rem;
-    padding-block: 0.95rem;
+    display: none;
   }
   .flow i {
     width: 5px;
@@ -271,10 +263,7 @@ const { compact = false } = Astro.props;
   }
 
   .tri {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(0.9rem, 1.6vw, 1.4rem);
-    align-items: stretch;
+    display: none;
   }
 
   /* --------------------------------------------------------- agents ---- */

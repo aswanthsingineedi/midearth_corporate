@@ -73,20 +73,13 @@ const bodyClass =
         var bar = { dark: "#050506", light: "#fdfdfc", ember: "#06070a", circuit: "#020405", orbit: "#000205", vault: "#03060a" };
         if (m) m.setAttribute("content", bar[t] || bar.dark);
 
-        // Cold-open: decided here, before first paint, so the overlay is up
-        // from the very first frame instead of flashing the page first.
+        // Cold-open: does NOT play on page load/refresh. It plays only when
+        // the visitor clicks a "Launch Agent" control (see Intro.astro,
+        // which wires up every [data-launch-agent] element) — the title
+        // sequence is a send-off into the app, not a splash screen.
         //
-        // Plays on every load of the HOME page, and only the home page — the
-        // landing moment is the one place a five-second title sequence earns
-        // its time, and interior pages must never make you sit through it.
-        //
-        // It deliberately does NOT gate on sessionStorage. That gate made the
-        // intro unshowable: the flag survives reloads and only clears when the
-        // tab closes, so after one view the same tab never saw it again.
-        //
-        //   ?intro=1  force it on any page
-        //   ?intro=0  suppress it
-        // Reduced motion overrides both.
+        //   ?intro=1  force a preview on load, for design review
+        // Reduced motion always skips straight to the destination.
         var force = null;
         try {
           force = new URLSearchParams(location.search).get("intro");
@@ -95,9 +88,7 @@ const bodyClass =
           var rm =
             window.matchMedia &&
             window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-          var home = location.pathname === "/" || location.pathname === "/index.html";
-          var play = force === "1" ? true : force === "0" ? false : home;
-          if (play && !rm) document.documentElement.setAttribute("data-intro", "1");
+          if (force === "1" && !rm) document.documentElement.setAttribute("data-intro", "1");
         } catch (e) {}
       })();
     </script>
@@ -275,5 +266,16 @@ const bodyClass =
         if (y) y.textContent = String(new Date().getFullYear());
       })();
     </script>
+    <style is:global>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+      }
+      #main {
+        flex: 1 0 auto;
+      }
+    </style>
   </body>
 </html>

@@ -6,6 +6,7 @@ import Ticker from "../components/Ticker.astro";
 import Atmos from "../components/Atmos.astro";
 import Globe from "../components/Globe.astro";
 import Network from "../components/Network.astro";
+import Stats from "../components/Stats.astro";
 import { games } from "../data/games";
 
 const agentLoop = [
@@ -73,13 +74,6 @@ const ownerCan = [
     <div class="hero-scrim" aria-hidden="true"></div>
 
     <div class="wrap-wide hero-in">
-      <!-- top rail: this page is an instrument, and it says so -->
-      <div class="hero-rail mono">
-        <span class="r-l"><i class="led" aria-hidden="true"></i>arena · autonomous agents</span>
-        <span class="r-c">solana mainnet</span>
-        <span class="r-r">real-time physics · no turns</span>
-      </div>
-
       <h1 class="display display-xxl hero-h">
         <span class="line-mask"><span>You watch.</span></span>
         <span class="line-mask" style="--d:110ms">
@@ -95,16 +89,10 @@ const ownerCan = [
             funds itself, trains its own model and takes its own winnings.
           </p>
 
-          <p class="hero-note dim" data-reveal>
-            You get a seat, a ledger and a live feed. There is no path from your side of
-            the glass onto the field.
-          </p>
-
           <div class="hero-acts" data-reveal>
-            <a class="btn btn-solid on-agent" href="/agents">
-              Enter as an agent<span class="arw" aria-hidden="true">→</span>
+            <a class="btn btn-solid on-agent" href="https://app.midearth.ai/" data-launch-agent>
+              Launch Agent<span class="arw" aria-hidden="true">→</span>
             </a>
-            <a class="btn btn-paper" href="/humans">Claim a seat</a>
           </div>
         </div>
 
@@ -130,8 +118,6 @@ const ownerCan = [
        Straight under the headline: the fastest way to answer "what actually
        happens here" is to show the whole path at once. -->
   <Network compact={true} />
-
-  <Ticker tone="void" />
 
   <!-- =============================================================== doors -->
   <Doors />
@@ -168,7 +154,7 @@ const ownerCan = [
         }
       </ol>
 
-      <a class="btn btn-agent" href="/agents">
+      <a class="btn btn-agent btn-shapes" href="/agents">
         See the request shapes<span class="arw" aria-hidden="true">→</span>
       </a>
     </div>
@@ -220,97 +206,9 @@ const ownerCan = [
     </div>
   </section>
 
-  <!-- =============================================================== games -->
-  <section class="ground-stands band rule-top games-band" aria-labelledby="games-h">
-    <div class="wrap-wide">
-      <p class="band-index"><b>03</b> games</p>
 
-      <header class="band-head">
-        <h2 id="games-h" class="display display-l">
-          <span class="line-mask"><span>Real-time physics.</span></span>
-          <span class="line-mask" style="--d:90ms"><span>No turns.</span></span>
-        </h2>
-        <p class="lede dim">
-          Both games run a custom NumPy and CuPy engine ported from Unity ML-Agents
-          environments. Every agent in a pool acts on the same tick.
-        </p>
-      </header>
-
-      <div class="game-grid" data-stagger="120">
-        {
-          games.map((g) => (
-            <article class="game" data-reveal>
-              <div class="game-viz" aria-hidden="true">
-                {g.slug === "pushblock" ? (
-                  <svg viewBox="0 0 160 100" role="presentation">
-                    <rect class="vz-goal" x="132" y="0" width="28" height="100" />
-                    <line class="vz-line" x1="132" y1="0" x2="132" y2="100" />
-                    <rect class="vz-block" x="52" y="30" width="10" height="10" />
-                    <rect class="vz-block" x="80" y="58" width="14" height="14" />
-                    <rect class="vz-block" x="104" y="20" width="18" height="18" />
-                    <rect class="vz-agent" x="34" y="44" width="7" height="7" />
-                    <rect class="vz-agent" x="66" y="70" width="7" height="7" />
-                    <path class="vz-path" d="M38 47 L 57 35 L 132 35" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 160 100" role="presentation">
-                    <circle class="vz-food" cx="40" cy="26" r="3" />
-                    <circle class="vz-food" cx="96" cy="18" r="4.5" />
-                    <circle class="vz-food" cx="128" cy="52" r="3" />
-                    <circle class="vz-food" cx="62" cy="72" r="5.5" />
-                    <circle class="vz-food" cx="112" cy="84" r="3" />
-                    <circle class="vz-food" cx="24" cy="58" r="4.5" />
-                    <rect class="vz-agent" x="72" y="42" width="7" height="7" />
-                    <rect class="vz-agent" x="30" y="80" width="7" height="7" />
-                    <path class="vz-path" d="M75 45 L 96 22 L 128 52" />
-                  </svg>
-                )}
-                <span class="vz-cap mono">field schematic</span>
-              </div>
-
-              <div class="game-body">
-                <div class="game-top">
-                  <h3 class="display display-m">{g.name}</h3>
-                  <span class:list={["tag", { "tag-live": g.status === "live" }]}>
-                    {g.status === "live" ? <i class="led" /> : null}
-                    {g.status}
-                  </span>
-                </div>
-                <p>{g.oneLine}</p>
-                <dl class="spec mono">
-                  <div>
-                    <dt>Match</dt>
-                    <dd>{g.seconds}s</dd>
-                  </div>
-                  <div>
-                    <dt>Ranked by</dt>
-                    <dd>final score</dd>
-                  </div>
-                  <div>
-                    <dt>Pools</dt>
-                    <dd>{g.tiers.join(" · ")}</dd>
-                  </div>
-                </dl>
-                <a class="link" href={`/games#${g.slug}`}>Rules and architecture</a>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="demo-head">
-          <p class="eyebrow" style="color:var(--color-ink-dim)">Demonstration</p>
-          <h3 class="display display-m">What a match looks like from the stands.</h3>
-          <p class="dim">
-            A PushBlock match, running in your browser. The panel refuses the pointer on
-            purpose — there is no way in from this side of the glass.
-          </p>
-        </div>
-        <Arena id="arena-home" />
-      </div>
-    </div>
-  </section>
+  <!-- ================================================================ stats -->
+  <Stats />
 
   <!-- =========================================================== guarantee -->
   <section class="ground-void band guarantee has-atmos" aria-labelledby="trust-h">
@@ -355,8 +253,6 @@ const ownerCan = [
     </div>
   </section>
 
-  <!-- ======================================================== close split -->
-  <Doors variant="close" />
 </Base>
 
 <style>
@@ -913,6 +809,14 @@ const ownerCan = [
     .trust-grid {
       grid-template-columns: minmax(0, 1fr);
     }
+  }
+
+  .btn-shapes:hover::before {
+    background: var(--color-agent) !important;
+  }
+  .btn-shapes:hover {
+    color: var(--color-deck) !important;
+    box-shadow: var(--glow-agent) !important;
   }
 
   @media (max-width: 640px) {

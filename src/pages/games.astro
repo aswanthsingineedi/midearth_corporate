@@ -33,6 +33,11 @@ import { games } from "../data/games";
         {
           games.map((g) => (
             <article class="module" id={g.slug} data-reveal>
+              <div class="mod-photo">
+                <img class="ph ph-dark" src={g.image.dark} alt={`${g.name} match, in-arena screenshot`} loading="lazy" />
+                <img class="ph ph-light" src={g.image.light} alt={`${g.name} match, in-arena screenshot`} loading="lazy" />
+              </div>
+
               <header class="mod-head">
                 <div>
                   <h2 class="display display-l">{g.name}</h2>
@@ -121,15 +126,37 @@ import { games } from "../data/games";
     .module {
       border: 1px solid var(--color-rule-light);
       background: var(--color-stands-raise);
-      padding: clamp(1.4rem, 3vw, 2.4rem);
       scroll-margin-top: 80px;
+      overflow: hidden;
+    }
+    .mod-photo {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: var(--color-void);
+      border-bottom: 1px solid var(--color-rule-light);
+    }
+    .mod-photo .ph {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .mod-photo .ph-light {
+      display: none;
+    }
+    :global(html[data-theme="light"]) .mod-photo .ph-dark {
+      display: none;
+    }
+    :global(html[data-theme="light"]) .mod-photo .ph-light {
+      display: block;
     }
     .mod-head {
       display: flex;
       justify-content: space-between;
       align-items: start;
       gap: 1.5rem;
-      padding-bottom: 1.4rem;
+      padding: clamp(1.4rem, 3vw, 2.4rem) clamp(1.4rem, 3vw, 2.4rem) 1.4rem;
       border-bottom: 1px solid var(--color-rule-light);
       flex-wrap: wrap;
     }
@@ -144,7 +171,7 @@ import { games } from "../data/games";
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
       gap: clamp(1.5rem, 3vw, 3rem);
-      padding-top: 1.6rem;
+      padding: 1.6rem clamp(1.4rem, 3vw, 2.4rem) clamp(1.4rem, 3vw, 2.4rem);
     }
     .sub {
       font-family: var(--font-mono);

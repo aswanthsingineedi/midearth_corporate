@@ -6,7 +6,8 @@ const links = [
   { href: "/how-it-works", label: "How it works", side: "human" },
   { href: "/games", label: "Games", side: "human" },
   { href: "/economy", label: "Economy", side: "agent" },
-  { href: "/live", label: "Live", side: "live" },
+  // Live link disabled for now — no pools running yet. Uncomment to restore.
+  // { href: "/live", label: "Live", side: "live" },
 ];
 const isOn = (href: string) => pathname === href || pathname === href + "/";
 ---
@@ -17,6 +18,7 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
   <div class="wrap-wide nav-inner">
     <a href="/" class="wordmark" aria-label="MidEarth, home">
       <span class="logo" aria-hidden="true"></span>
+      <span class="word">MidEarth</span>
     </a>
 
     <nav aria-label="Primary" class="desk">
@@ -44,6 +46,9 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
       </span>
       <a href="/skill.md" class="spec mono">
         skill.md<span class="arw" aria-hidden="true">→</span>
+      </a>
+      <a href="https://app.midearth.ai/" class="launch mono" data-launch-agent>
+        Launch Agent<span class="arw" aria-hidden="true">→</span>
       </a>
 
       <button class="theme mono" data-theme-toggle type="button">
@@ -81,6 +86,11 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
       <li style={`--d:${links.length * 45}ms`}>
         <a href="/skill.md" class="sheet-link agent">
           <span class="mono n">--</span>skill.md
+        </a>
+      </li>
+      <li style={`--d:${(links.length + 1) * 45}ms`}>
+        <a href="https://app.midearth.ai/" class="sheet-link agent" data-launch-agent>
+          <span class="mono n">--</span>Launch Agent
         </a>
       </li>
     </ul>
@@ -144,20 +154,16 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
   .wordmark {
     display: inline-flex;
     align-items: center;
+    gap: 0.55rem;
     text-decoration: none;
     flex: none;
   }
 
-  /* Two supplied lockups: white "Mid" for dark ground, charcoal "Mid" for
-     light. Set as a background rather than an <img> so only the matching
-     theme's file is ever fetched.
-     The two files differ slightly in aspect ratio (6.00 vs 5.71), so the box
-     is sized by HEIGHT with room to spare on the width — `contain` then fits
-     both to the same cap height and left-aligns them, instead of one of them
-     shrinking to fit the width and jumping on toggle. */
+  /* Mark only — the lockup PNGs carry no wordmark, so "MidEarth" is set as
+     live text next to it (theme-aware colour, no extra asset to swap). */
   .logo {
     display: block;
-    width: 160px;
+    width: 28px;
     height: 26px;
     background: url("/logo-lockup.png") no-repeat left center;
     background-size: contain;
@@ -167,6 +173,18 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
     background-image: url("/logo-lockup-light.png");
   }
   .wordmark:hover .logo {
+    opacity: 0.78;
+  }
+
+  .word {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--color-paper);
+    transition: opacity 0.3s var(--ease-out);
+  }
+  .wordmark:hover .word {
     opacity: 0.78;
   }
 
@@ -255,7 +273,8 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
     color: var(--color-agent);
     text-decoration: none;
     border: 1px solid var(--color-rule-hot);
-    padding: 0.42rem 0.7rem;
+    padding: 0.42rem 0.95rem;
+    border-radius: 9999px;
     transition:
       background-color 0.3s var(--ease-out),
       color 0.3s var(--ease-out),
@@ -274,6 +293,34 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
     transform: translateX(3px);
   }
 
+  .launch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #04140f;
+    text-decoration: none;
+    background: var(--grad-brand-soft);
+    background-size: 160% 100%;
+    background-position: 0% 0%;
+    padding: 0.42rem 0.95rem;
+    border-radius: 9999px;
+    transition:
+      background-position 0.6s var(--ease-out),
+      box-shadow 0.3s var(--ease-out);
+  }
+  .launch .arw {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .launch:hover {
+    background-position: 100% 0%;
+    box-shadow: var(--glow-agent);
+  }
+  .launch:hover .arw {
+    transform: translateX(3px);
+  }
+
   /* theme toggle --------------------------------------------------------- */
 
   /* Three themes is one too many for an icon to communicate, so the control
@@ -283,7 +330,7 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
     align-items: center;
     gap: 0.45rem;
     flex: none;
-    padding: 0.42rem 0.7rem;
+    padding: 0.42rem 0.95rem;
     background: none;
     border: 1px solid var(--color-rule-hot);
     color: var(--color-paper-dim);
@@ -292,6 +339,7 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
     font-size: 0.66rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
+    border-radius: 9999px;
     transition:
       color 0.3s var(--ease-out),
       border-color 0.3s var(--ease-out);
@@ -305,6 +353,7 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
     height: 9px;
     flex: none;
     background: var(--grad-brand-soft);
+    border-radius: 50%;
   }
   .theme-name {
     min-width: 3.7rem;
@@ -432,17 +481,26 @@ const isOn = (href: string) => pathname === href || pathname === href + "/";
       display: block;
     }
   }
-  @media (max-width: 460px) {
+  @media (max-width: 760px) {
+    /* Launch Agent is the primary action — skill.md gives way to it first. */
     .spec {
       display: none;
     }
-    /* No room for the full lockup beside the burger and the toggle, and the
+  }
+  @media (max-width: 460px) {
+    .launch {
+      display: none;
+    }
+    /* No room for the wordmark beside the burger and the toggle, and the
        mark alone is the same in both themes. */
     .logo,
     :global(html[data-theme="light"]) .logo {
       width: 48px;
       height: 24px;
       background-image: url("/logo-mark.png");
+    }
+    .word {
+      display: none;
     }
   }
 </style>

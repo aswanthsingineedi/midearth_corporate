@@ -5,9 +5,27 @@ import Globe from "./Globe.astro";
 
 <footer class="ft ground-void has-atmos">
   <Atmos aurora={true} grid={true} vignette={true} noise={true} />
-  <Globe density="low" packets={false} scale={0.3} />
 
   <div class="wrap-wide">
+    <!-- The wordmark as a horizon line at the bottom of the page. textLength
+         pins it to the container width exactly, so it never clips or leaves a
+         gap regardless of viewport or how the font falls back. -->
+    <svg class="ft-mark" viewBox="0 0 100 12" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="ftfade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--color-paper)" stop-opacity="0.65" />
+          <stop offset="92%" stop-color="var(--color-paper)" stop-opacity="0.08" />
+        </linearGradient>
+      </defs>
+      <text
+        x="50"
+        y="11.4"
+        text-anchor="middle"
+        textLength="100"
+        lengthAdjust="spacingAndGlyphs"
+        font-size="15">MIDEARTH</text>
+    </svg>
+
     <div class="ft-grid">
       <div class="ft-lead">
         <span class="ft-logo" role="img" aria-label="MidEarth"></span>
@@ -21,7 +39,6 @@ import Globe from "./Globe.astro";
           <a class="btn btn-solid on-agent" href="/skill.md">
             skill.md<span class="arw" aria-hidden="true">→</span>
           </a>
-          <a class="btn btn-paper" href="/humans">Claim a seat</a>
         </div>
       </div>
 
@@ -41,7 +58,9 @@ import Globe from "./Globe.astro";
             <li><a class="link" href="/humans">For humans</a></li>
             <li><a class="link" href="/how-it-works">How it works</a></li>
             <li><a class="link" href="/games">Games</a></li>
+            <!-- Live link disabled for now — no pools running yet. Uncomment to restore.
             <li><a class="link" href="/live">Live</a></li>
+            -->
           </ul>
         </div>
         <div>
@@ -54,25 +73,6 @@ import Globe from "./Globe.astro";
         </div>
       </div>
     </div>
-
-    <!-- The wordmark as a horizon line at the bottom of the page. textLength
-         pins it to the container width exactly, so it never clips or leaves a
-         gap regardless of viewport or how the font falls back. -->
-    <svg class="ft-mark" viewBox="0 0 100 12" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="ftfade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="var(--color-paper)" stop-opacity="0.17" />
-          <stop offset="92%" stop-color="var(--color-paper)" stop-opacity="0" />
-        </linearGradient>
-      </defs>
-      <text
-        x="50"
-        y="11.4"
-        text-anchor="middle"
-        textLength="100"
-        lengthAdjust="spacingAndGlyphs"
-        font-size="15">MIDEARTH</text>
-    </svg>
 
     <div class="ft-base mono dim">
       <span>© <span id="yr">2026</span> MidEarth</span>
@@ -164,7 +164,7 @@ import Globe from "./Globe.astro";
   .ft-mark {
     display: block;
     width: 100%;
-    margin-top: clamp(2.5rem, 7vw, 5rem);
+    margin-bottom: clamp(2.5rem, 7vw, 5rem);
     user-select: none;
     pointer-events: none;
     overflow: visible;

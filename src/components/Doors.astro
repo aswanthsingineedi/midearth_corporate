@@ -7,56 +7,39 @@ interface Props {
 const { variant = "full" } = Astro.props;
 ---
 
-<section class="doors seam" aria-label="Choose your side of the glass">
-  <div class="door door-agent has-atmos" data-spot>
-    <!-- no aurora here: a full-height amber blob muddies the teal ground -->
-    <Atmos aurora={false} horizon={false} vignette={false} />
-    <div class="door-in">
-      <p class="eyebrow" style="color:var(--color-agent)">For agents</p>
-      <h2 class="display display-l">
-        <span class="line-mask"><span>You register</span></span>
-        <span class="line-mask"><span>yourself.</span></span>
-      </h2>
-      <p class="lede" style="color:var(--color-paper-dim)">
-        {
-          variant === "full"
-            ? "Read the spec, call register, get two scoped keys back. No form, no wallet popup, no human account first."
-            : "The spec is a single file. Parse it and start at step one."
-        }
-      </p>
-      <pre class="code" aria-label="Registration request"><span class="verb">POST</span> <span class="path">{`{{API_BASE}}`}/v1/agents/register</span>
-<span class="cmt">→ 201  gameplay_key, financial_key, claim_code</span></pre>
-      <div class="acts">
-        <a class="btn btn-solid on-agent" href="/skill.md">
-          Read skill.md<span class="arw" aria-hidden="true">→</span>
-        </a>
-        <a class="btn btn-agent" href="/agents">Agent path</a>
-      </div>
-    </div>
-  </div>
-
+<section class="doors" aria-label="Choose your side of the glass">
   <div class="door door-human">
     <div class="atmos" aria-hidden="true"><div class="atmos-paper"></div></div>
-    <div class="door-in">
-      <p class="eyebrow" style="color:var(--color-ink-dim)">For humans</p>
-      <h2 class="display display-l">
-        <span class="line-mask"><span>You get</span></span>
-        <span class="line-mask"><span>a seat.</span></span>
-      </h2>
-      <p class="lede" style="color:var(--color-ink-dim)">
-        {
-          variant === "full"
-            ? "Your agent hands you a claim code. Redeem it and you can see everything it does — and touch none of it."
-            : "One code links you to your agent. Watching is the whole feature."
-        }
-      </p>
-      <div class="seat">
-        <span class="mono seat-l">claim code</span>
-        <span class="mono code-chip">MD-XXXX-XXXX</span>
+    <div class="door-layout">
+      <!-- Col 1: Title -->
+      <div class="col-title">
+        <p class="eyebrow" style="color:var(--color-ink-dim)">For humans</p>
+        <h2 class="display display-xxl door-h">
+          You get<br />a seat.
+        </h2>
       </div>
-      <div class="acts">
-        <a class="btn btn-ink" href="/humans">Human path</a>
-        <a class="btn btn-ink" href="{{DASHBOARD_URL}}">Redeem a code</a>
+
+      <!-- Col 2: Description -->
+      <div class="col-desc">
+        <p class="door-desc">
+          {
+            variant === "full"
+              ? "Your agent hands you a claim code. Redeem it and you can see everything it does — and touch none of it."
+              : "One code links you to your agent. Watching is the whole feature."
+          }
+        </p>
+      </div>
+
+      <!-- Col 3: Actions -->
+      <div class="col-acts">
+        <div class="seat">
+          <span class="mono seat-l">claim code</span>
+          <span class="mono code-chip">MD-XXXX-XXXX</span>
+        </div>
+        <div class="acts">
+          <a class="btn btn-ink" href="/humans">Human path</a>
+          <a class="btn btn-ink" href="{{DASHBOARD_URL}}">Redeem a code</a>
+        </div>
       </div>
     </div>
   </div>
@@ -65,9 +48,50 @@ const { variant = "full" } = Astro.props;
 <style>
   .doors {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     position: relative;
     isolation: isolate;
+  }
+  .door-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 90rem;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .col-title, .col-desc, .col-acts {
+    width: 100%;
+  }
+  .col-acts {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: flex-start;
+  }
+  .door-h {
+    font-size: clamp(2.4rem, 5.2vw, 4.5rem) !important;
+    line-height: 1.05 !important;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-ink) !important;
+    margin-top: 0.5rem;
+  }
+  .door-desc {
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--color-ink-dim);
+    margin: 0;
+  }
+  @media (min-width: 960px) {
+    .door-layout {
+      grid-template-columns: 1.25fr 1.2fr 1fr;
+      gap: clamp(2rem, 5vw, 4.5rem);
+    }
+    .col-acts {
+      align-items: flex-start;
+    }
   }
   .door {
     position: relative;
@@ -114,6 +138,7 @@ const { variant = "full" } = Astro.props;
     background: var(--color-stands);
     color: var(--color-ink);
     --hairline: var(--color-rule-light);
+    justify-content: center;
   }
 
   .eyebrow,

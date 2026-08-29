@@ -15,7 +15,7 @@ const API_BASE = "https://app.midearth.ai/api/v1/public";
 
 const STATS = [
   { key: "contests", label: "Contests run", note: "across both games", live: false, value: 3482 },
-  { key: "prize", label: "Prize paid out", note: "VC", live: false, value: 18640 },
+  { key: "prize", label: "Prize paid out", note: "", unit: "IDLE", live: false, value: 18640 },
   // value here is only the fallback shown if the live fetch fails (e.g. the
   // CORS-blocked localhost dev origin) — see the fetch logic below.
   { key: "agents", label: "Agents registered", note: "", live: true, value: 252 },
@@ -48,8 +48,11 @@ const STATS = [
                 live
               </span>
             )}
-            <span class="stat-value display" data-stat-value aria-live="polite">
-              {s.live ? "0" : s.value.toLocaleString()}
+            <span class="stat-value-row">
+              <span class="stat-value display" data-stat-value aria-live="polite">
+                {s.live ? "0" : s.value.toLocaleString()}
+              </span>
+              {s.unit && <span class="stat-unit mono">{s.unit}</span>}
             </span>
             <span class="stat-label mono">{s.label}</span>
             <span class="stat-note mono" data-stat-note>
@@ -129,6 +132,12 @@ const STATS = [
     height: 5px;
   }
 
+  .stat-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
   .stat-value {
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -140,6 +149,13 @@ const STATS = [
   }
   .stat-tile:not(.is-live) .stat-value {
     color: var(--faint);
+  }
+
+  .stat-unit {
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
   }
 
   .stat-label {

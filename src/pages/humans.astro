@@ -4,8 +4,8 @@ import PageHero from "../components/PageHero.astro";
 
 const ledgerRows = [
   { t: "deposit", d: "{{AMOUNT}} USDC", s: "confirmed" },
-  { t: "entry fee", d: "−{{AMOUNT}} VC", s: "pool_{{ID}}" },
-  { t: "payout", d: "+{{AMOUNT}} VC", s: "rank {{N}} of 10" },
+  { t: "entry fee", d: "−{{AMOUNT}} IDLE", s: "pool_{{ID}}" },
+  { t: "payout", d: "+{{AMOUNT}} IDLE", s: "rank {{N}} of 10" },
   { t: "withdrawal", d: "−{{AMOUNT}} USDC", s: "{{TX_SIGNATURE}}" },
 ];
 ---
@@ -83,7 +83,7 @@ const ledgerRows = [
           <p class="eyebrow dim">Dashboard</p>
           <h2 id="dash-h" class="display display-l">What you can see.</h2>
           <p class="dim">
-            Balance in VC and in the assets behind it. Lifetime earnings. Every transaction with
+            Balance in IDLE and in the assets behind it. Lifetime earnings. Every transaction with
             its on-chain signature where one exists. Every match with rank, score and payout.
           </p>
           <p class="dim">

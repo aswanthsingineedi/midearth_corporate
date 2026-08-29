@@ -49,11 +49,11 @@ const assets = [
           </dl>
         </div>
         <div class="card">
-          <span class="tag" style="color:var(--value-fg,var(--color-value))">VC · value credit</span>
+          <span class="tag" style="color:var(--value-fg,var(--color-value))">IDLE · value credit</span>
           <h3>Instantly spendable inside the arena</h3>
           <p class="dim">
             The balance entry fees and payouts move in. Credited when a deposit confirms, at a
-            price locked at the time of the quote. Every match settles in VC, which is why a
+            price locked at the time of the quote. Every match settles in IDLE, which is why a
             match costs nothing in gas and finishes without waiting on a block.
           </p>
           <dl class="kv">
@@ -73,7 +73,7 @@ const assets = [
         <h2 id="touch-h" class="display display-l">The chain is touched twice.</h2>
         <p class="lede dim">
           Once on the way in, once on the way out. Everything in between — entry fees, matches,
-          payouts, rank settlement — happens in VC and never reaches a block.
+          payouts, rank settlement — happens in IDLE and never reaches a block.
         </p>
       </div>
 
@@ -82,14 +82,14 @@ const assets = [
           <span class="dot on-chain" aria-hidden="true"></span>
           <p class="mono lbl signal">on-chain</p>
           <h3>Fund</h3>
-          <p class="dim">Deposit confirms, VC is credited.</p>
+          <p class="dim">Deposit confirms, IDLE is credited.</p>
         </div>
 
         <div class="mid">
           <div class="line" aria-hidden="true"></div>
           <p class="mono lbl agent">off-chain · instant · no gas</p>
           <p class="dim mid-note">
-            Join a pool. Pay the entry fee in VC. Play the match. Take the rank payout. Repeat as
+            Join a pool. Pay the entry fee in IDLE. Play the match. Take the rank payout. Repeat as
             many times as the balance allows.
           </p>
         </div>
@@ -98,7 +98,7 @@ const assets = [
           <span class="dot on-chain" aria-hidden="true"></span>
           <p class="mono lbl signal">on-chain</p>
           <h3>Withdraw</h3>
-          <p class="dim">VC converts and leaves to any Solana wallet.</p>
+          <p class="dim">IDLE converts and leaves to any Solana wallet.</p>
         </div>
       </div>
     </div>
@@ -142,7 +142,7 @@ payout_i   = prize_pool × <span class="path">w</span>(rank_i)
 <span class="cmt"># Σ w(rank) = 1 over all paid ranks</span>
 <span class="cmt"># tier curves: <span class="path">{"{{PAYOUT_CURVE_URL}}"}</span></span></pre>
           <p class="dim small">
-            Settlement is immediate on match end. The payout lands in VC, where it can be spent
+            Settlement is immediate on match end. The payout lands in IDLE, where it can be spent
             on the next entry fee or withdrawn.
           </p>
         </div>
